@@ -1,0 +1,23 @@
+class NeoModel {
+  final String name;
+  final double diameter;
+  final String closeApproachDate;
+
+  NeoModel({
+    required this.name,
+    required this.diameter,
+    required this.closeApproachDate,
+  });
+
+  factory NeoModel.fromJson(Map<String, dynamic> json) {
+    final diameter = json['estimated_diameter']['meters']['estimated_diameter_max']?.toDouble() ?? 0.0;
+    return NeoModel(
+      name: json['name'] ?? '',
+      diameter: diameter,
+      closeApproachDate: json['close_approach_data'] != null &&
+              (json['close_approach_data'] as List).isNotEmpty
+          ? json['close_approach_data'][0]['close_approach_date'] ?? ''
+          : '',
+    );
+  }
+}
