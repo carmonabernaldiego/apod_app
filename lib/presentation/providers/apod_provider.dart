@@ -4,27 +4,27 @@ import '../../domain/entities/apod.dart';
 import '../../domain/usecases/get_apod.dart';
 
 class ApodProvider with ChangeNotifier {
-  final GetApod getApodUseCase;
+  final GetApod getApod;
   final GoogleTranslator _translator = GoogleTranslator();
-
-  ApodProvider({required this.getApodUseCase});
 
   Apod? apod;
   bool isLoading = false;
   String? error;
+
+  ApodProvider({required this.getApod});
 
   Future<void> fetchApod() async {
     isLoading = true;
     error = null;
     notifyListeners();
     try {
-      final data = await getApodUseCase();
-      final translatedTitle = await _translator.translate(data.title, to: 'es');
-      final translatedExplanation = await _translator.translate(data.explanation, to: 'es');
+      final data = await getApod();
+      final t1 = await _translator.translate(data.title, to: 'es');
+      final t2 = await _translator.translate(data.explanation, to: 'es');
       apod = Apod(
-        title: translatedTitle.text,
+        title: t1.text,
         url: data.url,
-        explanation: translatedExplanation.text,
+        explanation: t2.text,
         date: data.date,
       );
     } catch (e) {

@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/neo_provider.dart';
+import '../providers/mars_provider.dart';
 
-class NeoScreen extends StatelessWidget {
-  const NeoScreen({super.key});
+class MarsScreen extends StatelessWidget {
+  const MarsScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    final vm = Provider.of<NeoProvider>(context);
+    final vm = Provider.of<MarsProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Asteroides Cercanos'),
+        title: const Text('Mars Rover Photos'),
         centerTitle: true,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.orange, Colors.deepOrangeAccent],
+              colors: [Colors.red, Colors.deepOrange],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -24,7 +24,7 @@ class NeoScreen extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.deepOrangeAccent, Colors.black87],
+            colors: [Colors.black87, Colors.redAccent],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -35,31 +35,39 @@ class NeoScreen extends StatelessWidget {
               ? const CircularProgressIndicator(color: Colors.white)
               : vm.error != null
                   ? Text('Error: ${vm.error}', style: const TextStyle(color: Colors.redAccent))
-                  : vm.neos.isEmpty
-                      ? ElevatedButton.icon(
-                          onPressed: vm.fetchNeos,
-                          icon: const Icon(Icons.brightness_2, color: Colors.white),
-                          label: const Text('Cargar asteroides'),
+                  : vm.photos == null || vm.photos!.isEmpty
+                      ? ElevatedButton(
+                          onPressed: vm.fetchPhotos,
+                          child: const Text('Cargar fotos de Marte'),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.orangeAccent,
+                            backgroundColor: Colors.deepOrange,
                             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                           ),
                         )
                       : ListView.builder(
-                          itemCount: vm.neos.length,
+                          itemCount: vm.photos!.length,
                           itemBuilder: (_, i) {
-                            final n = vm.neos[i];
+                            final p = vm.photos![i];
                             return Card(
                               margin: const EdgeInsets.symmetric(vertical: 8),
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                               elevation: 6,
-                              child: ListTile(
-                                leading: const Icon(Icons.warning, color: Colors.redAccent),
-                                title: Text(n.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-                                subtitle: Text(
-                                  'Diámetro: ${n.diameter.toStringAsFixed(2)} m\nAcercamiento: ${n.closeApproachDate}',
-                                ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                                    child: Image.network(p.imgSrc, fit: BoxFit.cover, height: 200),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: Text(
+                                      '${p.roverName} - ${p.cameraName}\n${p.earthDate}',
+                                      style: const TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ],
                               ),
                             );
                           },

@@ -11,12 +11,10 @@ class ApodModel {
     required this.date,
   });
 
-  factory ApodModel.fromJson(Map<String, dynamic> json) {
-    return ApodModel(
-      title: json['title'] ?? '',
-      url: json['url'] ?? '',
-      explanation: json['explanation'] ?? '',
-      date: json['date'] ?? '',
-    );
-  }
+  factory ApodModel.fromJson(Map<String, dynamic> json) => ApodModel(
+        title: json['title'] ?? '',
+        url: json['url'] ?? '',
+        explanation: json['explanation'] ?? '',
+        date: json['date'] ?? '',
+      );
 }

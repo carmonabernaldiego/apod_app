@@ -8,10 +8,9 @@ class NeoRemoteDatasource {
 
   Future<List<NeoModel>> fetchNeos() async {
     final now = DateTime.now();
-    final date = "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
-    final url =
-        'https://api.nasa.gov/neo/rest/v1/feed?start_date=$date&end_date=$date&api_key=$apiKey';
-
+    final date = "${now.year}-${now.month.toString().padLeft(2,'0')}-${now.day.toString().padLeft(2,'0')}";
+    final url = 'https://api.nasa.gov/neo/rest/v1/feed'
+        '?start_date=$date&end_date=$date&api_key=$apiKey';
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       final body = json.decode(response.body);

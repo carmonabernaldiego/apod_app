@@ -4,25 +4,25 @@ import '../../domain/entities/neo.dart';
 import '../../domain/usecases/get_neos.dart';
 
 class NeoProvider with ChangeNotifier {
-  final GetNeos getNeosUseCase;
+  final GetNeos getNeos;
   final GoogleTranslator _translator = GoogleTranslator();
-
-  NeoProvider({required this.getNeosUseCase});
 
   List<Neo> neos = [];
   bool isLoading = false;
   String? error;
+
+  NeoProvider({required this.getNeos});
 
   Future<void> fetchNeos() async {
     isLoading = true;
     error = null;
     notifyListeners();
     try {
-      final data = await getNeosUseCase();
+      final data = await getNeos();
       neos = await Future.wait(data.map((n) async {
-        final nameEs = await _translator.translate(n.name, to: 'es');
+        final t = await _translator.translate(n.name, to: 'es');
         return Neo(
-          name: nameEs.text,
+          name: t.text,
           diameter: n.diameter,
           closeApproachDate: n.closeApproachDate,
         );

@@ -2,10 +2,7 @@ import '../entities/neo.dart';
 import '../repositories/neo_repository.dart';
 
 class GetNeos {
-  final NeoRepository repository;
-  GetNeos(this.repository);
-
-  Future<List<Neo>> call() async {
-    return await repository.getNeos();
-  }
+  final NeoRepository repo;
+  GetNeos(this.repo);
+  Future<List<Neo>> call() => repo.getNeos();
 }

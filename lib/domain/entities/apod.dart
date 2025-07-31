@@ -3,7 +3,6 @@ class Apod {
   final String url;
   final String explanation;
   final String date;
-
   Apod({
     required this.title,
     required this.url,
