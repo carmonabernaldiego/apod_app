@@ -1,3 +1,5 @@
+// lib/main.dart
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,33 +26,57 @@ import 'presentation/providers/mars_provider.dart';
 import 'presentation/screens/home_screen.dart';
 
 void main() {
-  const nasaApiKey = "TJ4oYGssIOXBhEvG08neXxPE9gfVeifylsyrYMHb";
+  const nasaApiKey = 'TJ4oYGssIOXBhEvG08neXxPE9gfVeifylsyrYMHb';
   runApp(MyApp(apiKey: nasaApiKey));
 }
 
 class MyApp extends StatelessWidget {
   final String apiKey;
-  const MyApp({super.key, required this.apiKey});
+  const MyApp({Key? key, required this.apiKey}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        // APOD
         ChangeNotifierProvider(
-          create: (_) => ApodProvider(getApod: GetApod(
-              ApodRepositoryImpl(remoteDatasource: ApodRemoteDatasource(apiKey: apiKey)))),
+          create: (_) => ApodProvider(
+            getApod: GetApod(
+              ApodRepositoryImpl(
+                remoteDatasource: ApodRemoteDatasource(apiKey: apiKey),
+              ),
+            ),
+          ),
         ),
+        // NEO
         ChangeNotifierProvider(
-          create: (_) => NeoProvider(getNeos: GetNeos(
-              NeoRepositoryImpl(remoteDatasource: NeoRemoteDatasource(apiKey: apiKey)))),
+          create: (_) => NeoProvider(
+            getNeos: GetNeos(
+              NeoRepositoryImpl(
+                remoteDatasource: NeoRemoteDatasource(apiKey: apiKey),
+              ),
+            ),
+          ),
         ),
+        // EPIC (usa `remote`, no `remoteDatasource`)
         ChangeNotifierProvider(
-          create: (_) => EpicProvider(getEpic: GetEpic(
-              EpicRepositoryImpl(remoteDatasource: EpicRemoteDatasource(apiKey: apiKey)))),
+          create: (_) => EpicProvider(
+            getEpic: GetEpic(
+              EpicRepositoryImpl(
+                remoteDatasource: EpicRemoteDatasource(apiKey: apiKey),
+              ),
+            ),
+          ),
         ),
+        // MARS
         ChangeNotifierProvider(
-          create: (_) => MarsProvider(getMars: GetMars(
-              MarsRepositoryImpl(remoteDatasource: MarsRemoteDatasource(apiKey: apiKey)))),
+          create: (_) => MarsProvider(
+            getMars: GetMars(
+              MarsRepositoryImpl(
+                remoteDatasource: MarsRemoteDatasource(apiKey: apiKey),
+              ),
+            ),
+          ),
         ),
       ],
       child: MaterialApp(

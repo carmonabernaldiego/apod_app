@@ -24,3 +24,4 @@ flutter:
   uses-material-design: true
   assets:
     - assets/space_bg.jpg
+    - assets/galaxy_bg.jpg

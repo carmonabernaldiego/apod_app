@@ -11,15 +11,17 @@ class EpicModel {
     required this.date,
   });
 
-  factory EpicModel.fromJson(Map<String, dynamic> json, String apiKey) {
-    final date = DateTime.parse(json['date']);
+  /// Construye el modelo a partir del JSON de EPIC, sin API key.
+  factory EpicModel.fromJson(Map<String, dynamic> json) {
+    final date = DateTime.parse(json['date'] as String);
     final yyyy = DateFormat('yyyy').format(date);
     final mm   = DateFormat('MM').format(date);
     final dd   = DateFormat('dd').format(date);
-    final image = json['image'];
-    final url = 'https://api.nasa.gov/EPIC/archive/natural/$yyyy/$mm/$dd/png/$image.png?api_key=$apiKey';
+    final image = json['image'] as String;
+    final url = 'https://epic.gsfc.nasa.gov/archive/natural/'
+                '$yyyy/$mm/$dd/png/$image.png';
     return EpicModel(
-      caption: json['caption'] ?? '',
+      caption: json['caption'] as String? ?? '',
       imageUrl: url,
       date: date,
     );

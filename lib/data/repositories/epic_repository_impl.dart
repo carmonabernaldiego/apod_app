@@ -8,11 +8,13 @@ class EpicRepositoryImpl implements EpicRepository {
 
   @override
   Future<List<Epic>> getEpics() async {
-    final list = await remoteDatasource.fetchEpics();
-    return list.map((m) => Epic(
-      caption: m.caption,
-      imageUrl: m.imageUrl,
-      date: m.date,
-    )).toList();
+    final models = await remoteDatasource.fetchLatestEpics();
+    return models
+        .map((m) => Epic(
+              caption: m.caption,
+              imageUrl: m.imageUrl,
+              date: m.date,
+            ))
+        .toList();
   }
 }
